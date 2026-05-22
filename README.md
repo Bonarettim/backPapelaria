@@ -83,3 +83,8 @@ python manage.py migrate
 ### 6. Iniciar o Servidor de Desenvolvimento
 
 python manage.py runserver
+
+
+## 👨‍💻 Autor
+
+Matheus Bonaretti Simões
