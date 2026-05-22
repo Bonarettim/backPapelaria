@@ -49,5 +49,37 @@ Siga o passo a passo abaixo para rodar o projeto no seu ambiente:
 
 ### 1. Clonar o Repositório
 ```bash
-git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-cd projetoDjangoPapelaria
+git clone [https://github.com/Bonarettim/backPapelaria.git](https://github.com/Bonarettim/backPapelaria.git)
+cd backPapelaria 
+```
+
+### 2. Configurar o Ambiente Virtual (venv)
+
+python -m venv venv
+source venv/bin/activate
+
+### 3. Instalar as Dependências
+
+pip install -r requirements.txt
+
+### 4. Configurar as Variáveis do Banco no settings.py
+```bash
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'papelaria_db',
+        'USER': 'postgres',
+        'PASSWORD': 'SUA_SENHA_DO_POSTGRES',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
+
+### 5. Executar as Migrations (Criar tabelas no PostgreSQL)
+
+python manage.py migrate
+
+### 6. Iniciar o Servidor de Desenvolvimento
+
+python manage.py runserver
