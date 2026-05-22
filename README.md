@@ -54,13 +54,15 @@ cd backPapelaria
 ```
 
 ### 2. Configurar o Ambiente Virtual (venv)
-
+```bash
 python -m venv venv
 source venv/bin/activate
+```
 
 ### 3. Instalar as Dependências
-
+```bash
 pip install -r requirements.txt
+```
 
 ### 4. Configurar as Variáveis do Banco no settings.py
 ```bash
@@ -77,13 +79,14 @@ DATABASES = {
 ```
 
 ### 5. Executar as Migrations (Criar tabelas no PostgreSQL)
-
+```bash
 python manage.py migrate
+```
 
 ### 6. Iniciar o Servidor de Desenvolvimento
-
+```bash
 python manage.py runserver
-
+```
 
 ## 👨‍💻 Autor
 
