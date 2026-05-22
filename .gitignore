@@ -1,0 +1,16 @@
+# Ambiente virtual
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Banco de dados local (caso mude ou use sqlite para testes)
+*.sqlite3
+
+# Arquivos do sistema operacional Mac
+.DS_Store
