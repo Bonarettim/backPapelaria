@@ -1,11 +1,17 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from django.db.models import Sum, Q
-from decimal import Decimal
+
 from .models import Sale
 from .serializers import SaleSerializer
-from apps.sellers.models import Seller
+from apps.sellers.services.seller_report_service import SellerReportService
+
+
+class SalePagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = "page_size"
+    max_page_size = 100
 
 
 class SaleViewSet(viewsets.ModelViewSet):
@@ -17,6 +23,7 @@ class SaleViewSet(viewsets.ModelViewSet):
     )
 
     serializer_class = SaleSerializer
+    pagination_class = SalePagination
 
     @action(detail=False, methods=["get"], url_path="commissions-report")
     def commissions_report(self, request):
@@ -25,42 +32,16 @@ class SaleViewSet(viewsets.ModelViewSet):
 
         if not start_date or not end_date:
             return Response(
-                {
-                    "error": "Por favor, forneça start_date e end_date no formato YYYY-MM-DD."
-                },
-                status=status.HTTP_400_BAD_REQUEST,
+                {"error": "Os parâmetros 'start_date' e 'end_date' são obrigatórios."},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-        sellers_with_commissions = Seller.objects.annotate(
-            total_comm=Sum(
-                "sales__items__commission_amount",
-                filter=Q(
-                    sales__created_at__date__gte=start_date,
-                    sales__created_at__date__lte=end_date,
-                ),
-            )
-        )
+        try:
+            report_data = SellerReportService.get_commissions_report(start_date, end_date)
+            return Response(report_data, status=status.HTTP_200_OK)
 
-        report_data = []
-        general_total = Decimal("0.00")
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        for seller in sellers_with_commissions:
-            total_commission = seller.total_comm or Decimal("0.00")
-            general_total += total_commission
-
-            report_data.append(
-                {
-                    "seller_id": seller.id,
-                    "seller_name": seller.name,
-                    "total_commission": float(round(total_commission, 2)),
-                }
-            )
-
-        return Response(
-            {
-                "period": {"start": start_date, "end": end_date},
-                "general_commission_total": float(round(general_total, 2)),
-                "sellers": report_data,
-            },
-            status=status.HTTP_200_OK,
-        )
+        except Exception:
+            return Response({"error": "Erro interno no servidor."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

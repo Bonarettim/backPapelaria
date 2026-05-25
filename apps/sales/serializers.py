@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.db import transaction  # <-- IMPORTANTE: Para garantir consistência no banco
+from django.db import transaction
 from .models import Sale, SaleItem
 from apps.customers.serializers import CustomerSerializer
 from apps.sellers.serializers import SellerSerializer
@@ -51,14 +51,13 @@ class SaleSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["total_amount", "created_at"]
 
-    # Adicionado o decorator para garantir que ou salva tudo ou não salva nada
     @transaction.atomic
     def create(self, validated_data):
         items_data = validated_data.pop("items")
         sale = Sale.objects.create(**validated_data)
 
         for item_data in items_data:
-            item_data.pop("id", None)  # Proteção contra ID forçado no POST
+            item_data.pop("id", None)
             item = SaleItem(sale=sale, **item_data)
             SaleService.calculate_and_save_item(item)
 
@@ -69,7 +68,6 @@ class SaleSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         items_data = validated_data.pop("items", None)
 
-        # Atualiza os dados da venda pai
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
@@ -82,19 +80,15 @@ class SaleSerializer(serializers.ModelSerializer):
                 item_id = item_data.get("id")
 
                 if item_id and item_id in existing_items:
-                    # Atualiza item existente
                     item = existing_items[item_id]
                     item.product = item_data.get("product", item.product)
                     item.quantity = item_data.get("quantity", item.quantity)
                 else:
-                    # Cria novo item na edição
                     item = SaleItem(sale=instance, **item_data)
 
-                # Executa a regra de negócio e salva o item (código unificado aqui)
                 SaleService.calculate_and_save_item(item)
                 keep_item_ids.append(item.id)
 
-            # Deleta os itens que sumiram do payload
             for item_id, item in existing_items.items():
                 if item_id not in keep_item_ids:
                     item.delete()

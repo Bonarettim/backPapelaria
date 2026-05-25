@@ -1,12 +1,11 @@
 # apps/sales/commission_service.py
 from decimal import Decimal
+from apps.sales.models import DayCommissionRule
 
 
 class SaleService:
     @staticmethod
     def calculate_and_save_item(sale_item) -> None:
-
-        from apps.sales.models import DayCommissionRule
 
         product = sale_item.product
         sale_item.unit_price = product.unit_price

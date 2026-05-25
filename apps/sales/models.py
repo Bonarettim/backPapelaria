@@ -73,24 +73,5 @@ class SaleItem(models.Model):
         return f"{self.product} - Qty {self.quantity}"
 
     def save(self, *args, **kwargs):
-        self.unit_price = self.product.unit_price
-
-        self.subtotal = self.quantity * self.unit_price
-
-        weekday = self.sale.created_at.weekday()
-        percentual = self.product.commission_percentage
-
-        try:
-            rule = DayCommissionRule.objects.get(day_of_week=weekday)
-            if percentual < rule.min_percentage:
-                percentual = rule.min_percentage
-            elif percentual > rule.max_percentage:
-                percentual = rule.max_percentage
-        except DayCommissionRule.DoesNotExist:
-            pass
-
-        self.commission_percentage = percentual
-
-        self.commission_amount = self.subtotal * (self.commission_percentage / 100)
 
         super().save(*args, **kwargs)

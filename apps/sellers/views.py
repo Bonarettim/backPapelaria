@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Seller
 from .serializers import SellerSerializer
-from .service import SellerReportService
+from apps.sellers.services.seller_report_service import SellerReportService
 
 
 class SellerViewSet(viewsets.ModelViewSet):
@@ -21,6 +21,11 @@ class SellerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        report_data = SellerReportService.get_commissions_report(start_date, end_date)
-
-        return Response(report_data, status=status.HTTP_200_OK)
+        try:
+            report_data = SellerReportService.get_commissions_report(start_date, end_date)
+            return Response(report_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"error": "Erro interno ao gerar relatório."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

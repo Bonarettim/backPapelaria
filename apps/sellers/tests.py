@@ -22,3 +22,8 @@ class SellerAPITests(APITestCase):
         response = self.client.post(self.url, payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_commissions_report_invalid_params(self):
+        url = reverse("seller-commissions-report")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

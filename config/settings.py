@@ -82,14 +82,19 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # config/settings.py
 
+import os
+
+# Database
+# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "papelaria_db",  # Nome do banco de dados que vamos usar
-        "USER": "matheussimoes",  # O seu usuário do sistema
-        "PASSWORD": "",  # senha
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.environ.get("DB_NAME", "papelaria_db"),
+        "USER": os.environ.get("DB_USER", "papelaria_user"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "papelaria_pass"),
+        "HOST": os.environ.get("DB_HOST", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
