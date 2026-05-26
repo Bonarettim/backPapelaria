@@ -16,7 +16,6 @@ class DayCommissionRuleAdmin(admin.ModelAdmin):
 class SaleItemInline(admin.TabularInline):
     model = SaleItem
     extra = 1
-    # Deixamos os campos gerados pelo back apenas como leitura no Admin
     readonly_fields = (
         "unit_price",
         "subtotal",
