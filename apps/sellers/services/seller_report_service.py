@@ -1,4 +1,3 @@
-# Em um arquivo de serviço (ex: apps/sellers/services.py)
 from apps.sellers.models import Seller
 
 
