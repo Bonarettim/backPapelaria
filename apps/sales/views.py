@@ -1,7 +1,7 @@
-from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework import viewsets, status, filters
 
 from .models import Sale
 from .serializers import SaleSerializer
@@ -21,6 +21,16 @@ class SaleViewSet(viewsets.ModelViewSet):
         .prefetch_related("items", "items__product")
         .order_by("-created_at")
     )
+
+    serializer_class = SaleSerializer
+    pagination_class = SalePagination
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        "customer__name",
+        "seller__name",
+        "items__product__description",
+    ]
 
     serializer_class = SaleSerializer
     pagination_class = SalePagination

@@ -82,28 +82,28 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # config/settings.py
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "papelaria_db",  # Nome do banco de dados que vamos usar
-#         "USER": "matheussimoes",  # O seu usuário do sistema
-#         "PASSWORD": "",  # senha
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
-
-# Se você altera direto no settings.py, vai ficar assim:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',                     # Nome padrão do banco no RDS
-        'USER': 'postgres',                     # Usuário padrão que você deixou
-        'PASSWORD': 'postgres',         # A senha forte que você criou e anotou
-        'HOST': 'papelaria-db-prod.cjkka2s2kvhb.us-east-2.rds.amazonaws.com', # O Endpoint da AWS
-        'PORT': '5432',                         # Porta padrão do Postgres
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "papelaria_db",  # Nome do banco de dados que vamos usar
+        "USER": "matheussimoes",  # O seu usuário do sistema
+        "PASSWORD": "",  # senha
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
+
+# Se você altera direto no settings.py, vai ficar assim:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',                     # Nome padrão do banco no RDS
+#         'USER': 'postgres',                     # Usuário padrão que você deixou
+#         'PASSWORD': 'postgres',         # A senha forte que você criou e anotou
+#         'HOST': 'papelaria-db-prod.cjkka2s2kvhb.us-east-2.rds.amazonaws.com', # O Endpoint da AWS
+#         'PORT': '5432',                         # Porta padrão do Postgres
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
