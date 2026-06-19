@@ -32,8 +32,6 @@ class SaleViewSet(viewsets.ModelViewSet):
         "items__product__description",
     ]
 
-    serializer_class = SaleSerializer
-    pagination_class = SalePagination
 
     @action(detail=False, methods=["get"], url_path="commissions-report")
     def commissions_report(self, request):

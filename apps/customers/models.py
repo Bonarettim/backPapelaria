@@ -1,19 +1,6 @@
-from django.db import models
+from apps.common.models import PersonBase
 
-
-class Customer(models.Model):
-    name = models.CharField(max_length=255)
-
-    email = models.EmailField(unique=True)
-
-    phone = models.CharField(max_length=20)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    updated_at = models.DateTimeField(auto_now=True)
+class Customer(PersonBase):
 
     class Meta:
         db_table = "customers"
-
-    def __str__(self):
-        return self.name
